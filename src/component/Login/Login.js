@@ -1,11 +1,25 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
+import { connect } from "react-redux";
 
-class Login extends Component{
-  render(){
+import LoginUI from "./LoginUI";
+import { login, cleanMsg } from "reducer/user.redux";
+
+@connect(state => state.user.toObject(), { login, cleanMsg })
+export default class Login extends Component {
+  componentWillMount() {
+    // this.props.cleanMsg();
+  }
+  register = () => {
+    this.props.history.push("/register");
+  };
+  render() {
+    console.log(this.props);
     return (
-      <h2>Login</h2>
-    )
+      <LoginUI
+        register={this.register}
+        login={this.props.login}
+        msg={this.props.msg}
+      />
+    );
   }
 }
-
-export default Login

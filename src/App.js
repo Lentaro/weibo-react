@@ -5,8 +5,11 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
 // 引入reducer
 import reducers from "reducer/reducer";
-import Login from 'component/Login/Login'
-import Register from 'component/Register/Register'
+import Login from "component/Login/Login";
+import Register from "component/Register/Register";
+import AuthRoute from "component/AuthRoute/AuthRoute";
+import Dashboard from "component/Dashboard/Dashboard";
+import "./App.less";
 
 const store = createStore(
   reducers,
@@ -23,9 +26,11 @@ class App extends Component {
       <Provider store={store}>
         <BrowserRouter>
           <div className="app">
+            <Route path="/" component={AuthRoute} />
             <Switch>
-              <Route path='/login' component={Login} />
-              <Route path='/register' component={Register} />
+              <Route path="/login" component={Login} />
+              <Route path="/register" component={Register} />
+              <Route component={Dashboard} />
             </Switch>
           </div>
         </BrowserRouter>
