@@ -1,15 +1,26 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { is } from "immutable";
 
 import { register, cleanMsg } from "reducer/user.redux";
 import RegisterUI from "./RegisterUI";
-@connect(state => state.user.toObject(), { register, cleanMsg })
+@connect(
+  state => {
+    return { user: state.user };
+  },
+  { register, cleanMsg }
+)
 class Register extends Component {
-  componentWillMount() {
+  shouldComponentUpdate(nextProps, nextState) {
+    return !is(nextProps.user, this.props.user);
+  }
+  componentWillUnmount() {
     this.props.cleanMsg();
   }
   render() {
-    return <RegisterUI register={this.props.register} msg={this.props.msg} />;
+    const { register } = this.props;
+    const { msg, redirectTo } = this.props.user.toJS();
+    return <RegisterUI register={register} msg={msg} redirect={redirectTo} />;
   }
 }
 

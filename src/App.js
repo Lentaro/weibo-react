@@ -26,7 +26,7 @@ class App extends Component {
       <Provider store={store}>
         <BrowserRouter>
           <div className="app">
-            <Route path="/" component={AuthRoute} />
+            <AuthRoute />
             <Switch>
               <Route path="/login" component={Login} />
               <Route path="/register" component={Register} />

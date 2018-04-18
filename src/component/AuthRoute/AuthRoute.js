@@ -1,8 +1,11 @@
 import { Component } from "react";
 import axios from "axios";
-import { loadData } from "reducer/user.redux";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
+import { loadData } from "reducer/user.redux";
+
+@withRouter
 @connect(null, { loadData })
 
 // 验证信息用路由组件
@@ -32,3 +35,16 @@ export default class AuthRoute extends Component {
     return null;
   }
 }
+
+// const initialState = {
+//   nickname: "",
+//   avatar: "",
+//   desc: "",
+//   sex: "",
+//   follow: [],
+//   fans: [],
+//   blog: [],
+//   birthday: moment("1980/1/1", "YYYY/MM/DD"),
+//   msg: "",
+//   redirectTo: ""
+// };

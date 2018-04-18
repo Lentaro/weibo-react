@@ -1,8 +1,9 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { Card, Form, Input, Icon, Button, Tooltip, Alert } from "antd";
+import { Redirect } from "react-router-dom";
 
-import './RegisterUI.less'
+import "./RegisterUI.less";
 
 export default class RegisterUI extends PureComponent {
   static propTypes = {
@@ -52,7 +53,7 @@ export default class RegisterUI extends PureComponent {
   render() {
     const FormItem = Form.Item;
     const { getFieldDecorator } = this.props.form;
-    const { msg } = this.props;
+    const { msg, redirect } = this.props;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -77,6 +78,7 @@ export default class RegisterUI extends PureComponent {
     };
     return (
       <div className="sign-up-bg">
+        {redirect ? <Redirect to={redirect} /> : null}
         <Card title="注册" id="register-card">
           <Form onSubmit={this.handleSubmit}>
             <FormItem {...formItemLayout} label="用户名">
@@ -132,6 +134,5 @@ export default class RegisterUI extends PureComponent {
   }
 }
 
-
 //Form.create将表单包装起来，组件会带有this.props.form属性
-RegisterUI = Form.create({})(RegisterUI)
+RegisterUI = Form.create({})(RegisterUI);

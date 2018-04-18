@@ -1,18 +1,50 @@
 import React, { PureComponent } from "react";
-import { Modal, Layout, Menu, Icon, Col } from "antd";
+import { Modal, Layout, Menu, Icon } from "antd";
 import PropTypes from "prop-types";
+import { Route, Switch, Redirect } from "react-router-dom";
 
 import Home from "component/Home/Home";
 import Message from "component/Message/Message";
 import Me from "component/Me/Me";
 import UserInfo from "component/UserInfo/UserInfo";
 import Logo from "component/Logo/Logo";
+import "./DashboardUI.less";
 
 const { Sider } = Layout;
 const MenuItem = Menu.Item;
-
 export default class Dashboard extends PureComponent {
-  static propTypes = {};
+  static propTypes = {
+    logout: PropTypes.func.isRequired,
+    push: PropTypes.func.isRequired
+  };
+  state = {
+    logoutModal: false
+  };
+  handleJump = e => {
+    const { key } = e;
+    // console.log(keyPath)
+    // console.log(this.props.history)
+    if (key === "logout") {
+      return this.handleLogout();
+    }
+    if (this.props.pathname !== key) {
+      // console.log(1)
+      this.props.push(key);
+    }
+  };
+  handleLogout = () => {
+    this.setState({
+      logoutModal: true
+    });
+  };
+  handleCancel = () => {
+    this.setState({
+      logoutModal: false
+    });
+  };
+  handleOk = () => {
+    this.props.logout();
+  };
 
   render() {
     const list = [
@@ -42,16 +74,18 @@ export default class Dashboard extends PureComponent {
       }
     ];
     // console.log(list[0].path)
-    // console.log(this.props)
-    const { redirectTo } = this.props;
-    const { pathname } = this.props.location;
-    const page = list.find(v => v.path === pathname);
     // console.log(page)
-    const user = this.props.username;
+    const { pathname, redirect, handleCollapse, collapse } = this.props;
+    const page = list.find(v => v.path === pathname);
     return page ? (
-      <Col className="dashborad-box" offset={4} span={16}>
-        <Layout style={{ minHeight: "100vh" }}>
-          <Sider collapsible>
+      <div className="dashboard-box">
+        {redirect ? <Redirect to={redirect} /> : null}
+        <Layout className="dashboard-layout">
+          <Sider
+            collapsible
+            className="dashboard-sider"
+            onCollapse={handleCollapse}
+          >
             <Logo />
             {/*defaultSelectedKeys的值预计为数组*/}
             <Menu
@@ -88,15 +122,18 @@ export default class Dashboard extends PureComponent {
               </Modal>
             </Menu>
           </Sider>
-          <Layout style={{ height: "100vh", padding: "24px" }}>
-            {/* <Switch>
-              {list.map(v=>(
-                <Route key={v.path} path={v.path} component={v.component}></Route>
+          <Layout
+            className="app-route"
+            style={{ marginLeft: collapse ? "80px" : "200px" }}
+          >
+            <Switch>
+              {list.map(v => (
+                <Route key={v.path} path={v.path} component={v.component} />
               ))}
-            </Switch> */}
+            </Switch>
           </Layout>
         </Layout>
-      </Col>
+      </div>
     ) : null;
   }
 }

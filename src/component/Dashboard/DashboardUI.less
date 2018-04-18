@@ -1,0 +1,31 @@
+.dashboard-box {
+  width: 100%;
+  min-height: 100%;
+  background-color: #b8daf0;
+  .sider-menu {
+    position: absolute;
+    top: 50px;
+    bottom: 48px;
+  }
+  .logout {
+    position: absolute;
+    bottom: 0px;
+  }
+  .dashboard-layout {
+    min-height: 100vh;
+    width: 1000px;
+    margin: 0 auto;
+    .dashboard-sider {
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      z-index: 1;
+    }
+  }
+  .app-route {
+    min-width: 800px;
+    padding: 16px;
+    transition-property: all;
+    transition-duration: 0.2s;
+  }
+}

@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import { Card, Form, Input, Icon, Checkbox, Button, Alert } from "antd";
 import PropTypes from "prop-types";
+import { Redirect } from "react-router-dom";
 
 import "./LoginUI.less";
 
@@ -37,9 +38,10 @@ export default class LoginUI extends PureComponent {
     const FormItem = Form.Item;
     const { getFieldDecorator } = this.props.form;
     const { loginLoading, registerLoading } = this.state;
-    const { msg } = this.props;
+    const { msg, redirect } = this.props;
     return (
       <div className="sign-up-bg">
+        {redirect ? <Redirect to={redirect} /> : null}
         <Card title="登录" className="sign-up-card">
           <Form onSubmit={this.handleSubmit}>
             <FormItem>
