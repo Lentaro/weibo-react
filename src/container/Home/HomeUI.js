@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Col, Row } from "antd";
 
 import SendBlog from "component/SendBlog/SendBlog";
-import BlogList from "component/BlogList/BlogList";
+import BlogList from "container/BlogList/BlogList";
 import "./HomeUI.less";
 
 export default class HomeUI extends Component {

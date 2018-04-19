@@ -5,13 +5,14 @@ import { Card, Icon } from "antd";
 import "./AvatarSelect.less";
 
 export default class AvatarSelect extends PureComponent {
-  constructor(props) {
-    super(props);
-    const value = this.props.value || {};
-    this.state = {
-      avatar: value
-    };
-  }
+  // constructor(props) {
+  //   super(props);
+  //   const value = this.props.value || {};
+  //   this.
+  // }
+  state = {
+    avatar: this.props.value || {}
+  };
   static propTypes = {
     avatar:PropTypes.number
   };

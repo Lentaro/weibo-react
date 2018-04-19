@@ -3,16 +3,16 @@ import { Modal, Layout, Menu, Icon } from "antd";
 import PropTypes from "prop-types";
 import { Route, Switch, Redirect } from "react-router-dom";
 
-import Home from "component/Home/Home";
-import Message from "component/Message/Message";
-import Me from "component/Me/Me";
-import UserInfo from "component/UserInfo/UserInfo";
+import Home from "container/Home/Home";
+import Message from "container/Message/Message";
+import Me from "container/Me/Me";
+import UserInfo from "container/UserInfo/UserInfo";
 import Logo from "component/Logo/Logo";
 import "./DashboardUI.less";
 
 const { Sider } = Layout;
 const MenuItem = Menu.Item;
-export default class Dashboard extends PureComponent {
+export default class DashboardUI extends PureComponent {
   static propTypes = {
     logout: PropTypes.func.isRequired,
     push: PropTypes.func.isRequired

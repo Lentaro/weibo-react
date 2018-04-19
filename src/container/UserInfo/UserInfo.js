@@ -5,12 +5,7 @@ import { is } from "immutable";
 import { update, cleanMsg } from "reducer/user.redux";
 import UserInfoUI from "./UserInfoUI";
 
-@connect(
-  state => {
-    return { user: state.user };
-  },
-  { update, cleanMsg }
-)
+@connect(state => ({ user: state.user }), { update, cleanMsg })
 export default class UserInfo extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     return !is(nextProps.user, this.props.user);

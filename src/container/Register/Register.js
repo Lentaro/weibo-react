@@ -4,12 +4,7 @@ import { is } from "immutable";
 
 import { register, cleanMsg } from "reducer/user.redux";
 import RegisterUI from "./RegisterUI";
-@connect(
-  state => {
-    return { user: state.user };
-  },
-  { register, cleanMsg }
-)
+@connect(state => ({ user: state.user }), { register, cleanMsg })
 class Register extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     return !is(nextProps.user, this.props.user);

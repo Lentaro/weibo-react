@@ -92,7 +92,7 @@ module.exports = {
       component: rv("../src/component"),
       container: rv("../src/container"),
       reducer: rv("../src/reducer"),
-      utils: rv("../src/utils"),
+      utils: rv("../src/utils")
     },
     plugins: [
       // Prevents users from importing files from outside of src/ (or node_modules/).
@@ -222,7 +222,7 @@ module.exports = {
                 }
               },
               {
-                loader: require.resolve('less-loader'),
+                loader: require.resolve("less-loader"),
                 options: {
                   javascriptEnabled: true
                 }

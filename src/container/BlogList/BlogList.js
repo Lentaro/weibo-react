@@ -5,17 +5,12 @@ import { is } from "immutable";
 import BlogItem from "./BlogItem";
 import { getUserBlog } from "reducer/user.redux";
 
-@connect(
-  state => {
-    return { user: state.user };
-  },
-  { getUserBlog }
-)
+@connect(state => ({ user: state.user }), { getUserBlog })
 export default class BlogList extends Component {
   shouldComponentUpdate(nextProps, nextState) {
+    console.log(nextProps.user, this.props.user)
     return !is(nextProps.user, this.props.user);
   }
-  
   componentDidUpdate() {
     // console.log(this.props.user.get("_id"));
     this.props.getUserBlog(this.props.user.get("_id"));

@@ -96,7 +96,7 @@ module.exports = {
       component: rv("../src/component"),
       container: rv("../src/container"),
       reducer: rv("../src/reducer"),
-      utils: rv("../src/utils"),
+      utils: rv("../src/utils")
     },
     plugins: [
       // Prevents users from importing files from outside of src/ (or node_modules/).
@@ -214,16 +214,15 @@ module.exports = {
             // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
           },
           {
-              test: /(\.less)$/,
-              use: ExtractTextPlugin.extract({
-                  fallback: [{
-                      loader: 'style-loader',
-                  }],
-                  use: [
-                      'css-loader',
-                      'less-loader',
-                  ],
-              }),
+            test: /(\.less)$/,
+            use: ExtractTextPlugin.extract({
+              fallback: [
+                {
+                  loader: "style-loader"
+                }
+              ],
+              use: ["css-loader", "less-loader"]
+            })
           },
           // "file" loader makes sure assets end up in the `build` folder.
           // When you `import` an asset, you get its filename.

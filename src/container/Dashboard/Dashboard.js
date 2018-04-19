@@ -5,16 +5,11 @@ import { is } from "immutable";
 import { logout, cleanMsg } from "reducer/user.redux";
 import { handleCollapse } from "reducer/component.redux";
 import DashboardUI from "./DashboardUI";
-@connect(
-  state => {
-    return { user: state.user, component: state.component };
-  },
-  {
-    logout,
-    cleanMsg,
-    handleCollapse
-  }
-)
+@connect(state => ({ user: state.user, component: state.component }), {
+  logout,
+  cleanMsg,
+  handleCollapse
+})
 export default class Dashboard extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     return !(

@@ -1,7 +1,7 @@
 import { fromJS } from "immutable";
 import axios from "axios";
 
-import { addNewBlog, errorMsg } from "reducer/user.redux";
+import { addNewBlog, errorMsg } from "./user.redux";
 
 // actions
 // const SEND_BLOG_SUCCESS = "SEND_BLOG_SUCCESS";
@@ -16,18 +16,18 @@ const initialState = {
   source: "",
   // 被转发
   cited_num: "",
-  cited:[],
+  cited: [],
   // 评论
   comment_num: "",
-  comment:[],
+  comment: [],
   // 提及
   mentions: [],
   // 作者id
   author: "",
-  avatar:"",
+  avatar: "",
   id: "",
-  like:"",
-  nickname:""
+  like: "",
+  nickname: ""
 };
 
 export const blog = (state = fromJS(initialState), action) => {
@@ -38,7 +38,7 @@ export const blog = (state = fromJS(initialState), action) => {
       return state;
   }
 };
- 
+
 // action creator
 export const sendBlog = params => {
   return async dispatch => {

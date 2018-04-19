@@ -5,12 +5,7 @@ import { is } from "immutable";
 import { cleanMsg } from "reducer/user.redux";
 import MeUI from "./MeUI";
 
-@connect(
-  state => {
-    return { user: state.user };
-  },
-  { cleanMsg }
-)
+@connect(state => ({ user: state.user }), { cleanMsg })
 export default class Me extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     return !is(nextProps.user, this.props.user);

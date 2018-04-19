@@ -6,12 +6,7 @@ import { update } from "reducer/user.redux";
 import { sendBlog } from "reducer/blog.redux";
 import { connect } from "react-redux";
 
-@connect(
-  state => {
-    return { user: state.user };
-  },
-  { sendBlog, update }
-)
+@connect(state => ({ user: state.user }), { sendBlog, update })
 export default class Home extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     return !is(nextProps.user, this.props.user);

@@ -12,7 +12,7 @@ import { loadData } from "reducer/user.redux";
 export default class AuthRoute extends Component {
   componentDidMount() {
     const publicUrl = ["/login", "/register"];
-    // console.log(this.props)
+    console.log(this.props)
     const path = this.props.location.pathname;
     // 在publicUrl中寻找符合path的项，若找到第一个，返回其索引，若找不到返回-1
     if (publicUrl.indexOf(path) > -1) {
