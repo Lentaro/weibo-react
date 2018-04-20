@@ -2,22 +2,43 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { is } from "immutable";
 
-import BlogItem from "./BlogItem";
-import { getUserBlog } from "reducer/user.redux";
+import BlogItem from "component/BlogItem/BlogItem";
+import { getUserBlog, addLike } from "reducer/blog.redux";
 
-@connect(state => ({ user: state.user }), { getUserBlog })
+@connect(state => ({ blogList: state.blog.get("blog") }), {
+  getUserBlog,
+  addLike
+})
 export default class BlogList extends Component {
+  componentDidMount() {
+    this.props.getUserBlog(this.props.getWhoBlog);
+    // console.log(this.props.getWhoBlog)
+  }
   shouldComponentUpdate(nextProps, nextState) {
-    console.log(nextProps.user, this.props.user)
-    return !is(nextProps.user, this.props.user);
+    // console.log(nextProps.getWhoBlog, this.props.getWhoBlog);
+    // console.log(nextProps.blogList, this.props.blogList);
+    // console.log(is(nextProps.getWhoBlog, this.props.getWhoBlog));
+    // console.log(is(nextProps.blogList, this.props.blogList));
+    return !(
+      is(nextProps.getWhoBlog, this.props.getWhoBlog) &&
+      is(nextProps.blogList, this.props.blogList)
+    );
   }
   componentDidUpdate() {
-    // console.log(this.props.user.get("_id"));
-    this.props.getUserBlog(this.props.user.get("_id"));
+    //   console.log(this.props.getWhoBlog);
+    //   console.log(this.props.userId);
+    this.props.getUserBlog(this.props.getWhoBlog);
   }
+  handleCite = () => {};
+  handleComment = () => {};
+  handleLike = id => {
+    console.log(id);
+    console.log(1);
+    this.props.addLike(id);
+  };
   render() {
-    // console.log(this.props);
-    const { blog } = this.props.user.toJS();
+    // console.log(this.props.blogList.toJS());
+    const blog = this.props.blogList.toJS();
     return blog.map(v => (
       <BlogItem
         nickname={v.nickname}
@@ -30,6 +51,9 @@ export default class BlogList extends Component {
         like={v.like}
         mentions={v.mentions}
         key={v._id}
+        handleCite={this.handleCite}
+        handleComment={this.handleComment}
+        handleLike={this.handleLike}
       />
     ));
   }

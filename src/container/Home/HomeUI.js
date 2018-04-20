@@ -10,11 +10,19 @@ export default class HomeUI extends Component {
   static propTypes = {
     sendBlog: PropTypes.func.isRequired,
     update: PropTypes.func.isRequired,
-    blogNum: PropTypes.number.isRequired
+    blogNum: PropTypes.number.isRequired,
+    getWhoBlog: PropTypes.string.isRequired
   };
 
   render() {
-    const { avatar, sendBlog, blogNum, update, nickname } = this.props;
+    const {
+      avatar,
+      sendBlog,
+      blogNum,
+      update,
+      nickname,
+      getWhoBlog
+    } = this.props;
     return (
       <Row gutter={12} className="home-box">
         <Col span={18} className="home-left">
@@ -25,7 +33,7 @@ export default class HomeUI extends Component {
             avatar={avatar}
             nickname={nickname}
           />
-          <BlogList />
+          <BlogList getWhoBlog={getWhoBlog} />
         </Col>
         <Col span={6} className="home-right">
           <div

@@ -18,7 +18,8 @@ export default class DashboardUI extends PureComponent {
     push: PropTypes.func.isRequired
   };
   state = {
-    logoutModal: false
+    logoutModal: false,
+    collapse: false
   };
   handleJump = e => {
     const { key } = e;
@@ -45,7 +46,13 @@ export default class DashboardUI extends PureComponent {
   handleOk = () => {
     this.props.logout();
   };
-
+  handleCollapse=()=>{
+    let collapse = this.state.collapse
+    // console.log(collapse);
+    this.setState({
+      collapse:!collapse
+    })
+  }
   render() {
     const list = [
       {
@@ -57,7 +64,7 @@ export default class DashboardUI extends PureComponent {
       {
         path: "/message",
         text: "消息",
-        icon: "message",
+        icon: "mail",
         component: Message
       },
       {
@@ -75,7 +82,7 @@ export default class DashboardUI extends PureComponent {
     ];
     // console.log(list[0].path)
     // console.log(page)
-    const { pathname, redirect, handleCollapse, collapse } = this.props;
+    const { pathname, redirect } = this.props;
     const page = list.find(v => v.path === pathname);
     return page ? (
       <div className="dashboard-box">
@@ -84,7 +91,7 @@ export default class DashboardUI extends PureComponent {
           <Sider
             collapsible
             className="dashboard-sider"
-            onCollapse={handleCollapse}
+            onCollapse={this.handleCollapse}
           >
             <Logo />
             {/*defaultSelectedKeys的值预计为数组*/}
@@ -124,7 +131,7 @@ export default class DashboardUI extends PureComponent {
           </Sider>
           <Layout
             className="app-route"
-            style={{ marginLeft: collapse ? "80px" : "200px" }}
+            style={{ marginLeft: this.state.collapse ? "80px" : "200px" }}
           >
             <Switch>
               {list.map(v => (
