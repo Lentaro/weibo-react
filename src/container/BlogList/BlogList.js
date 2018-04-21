@@ -5,35 +5,42 @@ import { is } from "immutable";
 import BlogItem from "component/BlogItem/BlogItem";
 import { getUserBlog, addLike } from "reducer/blog.redux";
 
-@connect(state => ({ blogList: state.blog.get("blog") }), {
-  getUserBlog,
-  addLike
-})
+@connect(
+  state => ({ userId: state.user.get("id"), blogList: state.blog.get("blog") }),
+  {
+    getUserBlog,
+    addLike
+  }
+)
 export default class BlogList extends Component {
   componentDidMount() {
-    this.props.getUserBlog(this.props.getWhoBlog);
-    // console.log(this.props.getWhoBlog)
+    // console.log(this.props.userId);
+    // console.log(1)
+    if (!!this.props.userId) {
+      this.props.getUserBlog(this.props.userId);
+    }
   }
   shouldComponentUpdate(nextProps, nextState) {
-    // console.log(nextProps.getWhoBlog, this.props.getWhoBlog);
-    // console.log(nextProps.blogList, this.props.blogList);
-    // console.log(is(nextProps.getWhoBlog, this.props.getWhoBlog));
-    // console.log(is(nextProps.blogList, this.props.blogList));
+    // console.log(nextProps.userId, this.props.userId)
+    // console.log(is(nextProps.userId,this.props.userId))
     return !(
-      is(nextProps.getWhoBlog, this.props.getWhoBlog) &&
+      is(nextProps.userId, this.props.userId) &&
       is(nextProps.blogList, this.props.blogList)
     );
   }
   componentDidUpdate() {
-    //   console.log(this.props.getWhoBlog);
-    //   console.log(this.props.userId);
-    this.props.getUserBlog(this.props.getWhoBlog);
+    // console.log(2)
+    // console.log(this.props.userId);
+    // console.log(this.props.blogList.size===0);
+    if (this.props.blogList.size === 0) {
+      this.props.getUserBlog(this.props.userId);
+    }
   }
   handleCite = () => {};
   handleComment = () => {};
   handleLike = id => {
-    console.log(id);
-    console.log(1);
+    // console.log(id);
+    // console.log(1);
     this.props.addLike(id);
   };
   render() {

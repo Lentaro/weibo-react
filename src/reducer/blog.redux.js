@@ -1,4 +1,4 @@
-import { fromJS } from "immutable";
+import { fromJS, Map } from "immutable";
 import axios from "axios";
 
 import { blogTimeLineSort } from "utils/utils";
@@ -10,7 +10,7 @@ import { errorMsg } from "./user.redux";
 // const ERROR_MSG = "ERROR_MSG";
 const PUSH_BLOG = "PUSH_BLOG";
 const ADD_NEW_BLOG = "ADD_NEW_BLOG";
-const CHANGE_BLOG_INFO = "CHANGE_BLOG_INFO";
+const UPDATE_BLOG_INFO = "CHANGE_BLOG_INFO";
 
 // reducer
 const initialState = {
@@ -45,6 +45,19 @@ export const blog = (state = fromJS(initialState), action) => {
       });
     // case AUTH_SUCCESS:
     //   return state.mergeDeep(action.payload);
+    case UPDATE_BLOG_INFO:
+      return state.update("blog", v =>
+        state.get("blog").map(v => {
+          if (v) {
+            if (v.get("_id") === action.payload._id) {
+              return Map(action.payload);
+            } else {
+              return v;
+            }
+          }
+          return v;
+        })
+      );
     default:
       return state;
   }
@@ -58,8 +71,8 @@ const addNewBlog = blog => {
   return { type: ADD_NEW_BLOG, payload: blog };
 };
 
-const changeBlogInfo = blog => {
-  return { type: CHANGE_BLOG_INFO };
+const updateBlogInfo = blog => {
+  return { type: UPDATE_BLOG_INFO, payload: blog };
 };
 
 export const sendBlog = params => {
@@ -68,7 +81,7 @@ export const sendBlog = params => {
     const res = await axios.post("/blog/sendblog", params);
     if (res.status === 200 && res.data.code === 0) {
       const data = res.data.data;
-      // console.log(data)
+      // console.log(data);
       dispatch(addNewBlog(data));
     } else {
       dispatch(errorMsg(res.data.msg));
@@ -78,12 +91,12 @@ export const sendBlog = params => {
 
 export const addLike = blogId => {
   return async dispatch => {
-    console.log(blogId)
-    const res = await axios.post("/blog/like", blogId);
+    // console.log(blogId)
+    const res = await axios.post("/blog/like", { blogId });
     if (res.status === 200 && res.data.code === 0) {
-      const data = res.data.data;
-      // console.log(data)
-      dispatch(addNewBlog(data));
+      const { doc } = res.data;
+      // console.log(doc.like);
+      dispatch(updateBlogInfo(doc));
     } else {
       dispatch(errorMsg(res.data.msg));
     }
@@ -114,7 +127,7 @@ export const getUserBlog = params => {
     const res = await axios.get(`/blog/getuserblog?id=${params}`);
     if (res.status === 200 && res.data.code === 0) {
       let data = res.data.doc;
-      // console.log(data)
+      // console.log(res.data)
       data = blogTimeLineSort(data);
       // console.log(...data)
       dispatch(pushBlog(data));

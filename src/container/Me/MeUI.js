@@ -5,6 +5,8 @@ import moment from "moment";
 import PropTypes from "prop-types";
 
 import "./MeUI.less";
+import BlogList from "container/BlogList/BlogList";
+import BackTop from "component/BackTop/BackTop";
 
 const CardGrid = Card.Grid;
 
@@ -74,9 +76,10 @@ export default class componentName extends PureComponent {
             </Card>
           </Col>
           <Col span={17}>
-            <div className="blue" />
+            <BlogList />
           </Col>
         </Row>
+        <BackTop />
       </Layout>
     );
   }

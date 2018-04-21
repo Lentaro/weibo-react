@@ -39,16 +39,20 @@ export default class BlogItem extends PureComponent {
         className="blog-item"
         bodyStyle={{ padding: "12px" }}
         actions={[
-          <span onClick={handleCite} >
-            <Icon type="export"/> 
+          <span onClick={handleCite}>
+            <Icon type="export" />
             <span className="num">{cited_num ? cited_num : "转发"}</span>
           </span>,
-          <span onClick={handleComment} >
-            <Icon type="message"/>
+          <span onClick={handleComment}>
+            <Icon type="message" />
             <span className="num">{comment_num ? comment_num : "评论"}</span>
           </span>,
-          <span onClick={()=>{handleLike(id)}} >
-            <Icon type="like-o"/>
+          <span
+            onClick={() => {
+              handleLike(id);
+            }}
+          >
+            <Icon type={like.length ? "like" : "like-o"} />
             <span className="num">{like.length ? like.length : "赞"}</span>
           </span>
         ]}
