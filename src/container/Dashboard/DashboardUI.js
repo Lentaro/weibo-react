@@ -8,6 +8,7 @@ import Message from "container/Message/Message";
 import Me from "container/Me/Me";
 import UserInfo from "container/UserInfo/UserInfo";
 import Logo from "component/Logo/Logo";
+import BackTop from "component/BackTop/BackTop";
 import "./DashboardUI.less";
 
 const { Sider } = Layout;
@@ -21,6 +22,9 @@ export default class DashboardUI extends PureComponent {
     logoutModal: false,
     collapse: false
   };
+  componentDidUpdate() {
+    this.node.scrollIntoView();
+  }
   handleJump = e => {
     const { key } = e;
     // console.log(keyPath)
@@ -46,13 +50,13 @@ export default class DashboardUI extends PureComponent {
   handleOk = () => {
     this.props.logout();
   };
-  handleCollapse=()=>{
-    let collapse = this.state.collapse
+  handleCollapse = () => {
+    let collapse = this.state.collapse;
     // console.log(collapse);
     this.setState({
-      collapse:!collapse
-    })
-  }
+      collapse: !collapse
+    });
+  };
   render() {
     const list = [
       {
@@ -85,7 +89,8 @@ export default class DashboardUI extends PureComponent {
     const { pathname, redirect } = this.props;
     const page = list.find(v => v.path === pathname);
     return page ? (
-      <div className="dashboard-box">
+      <div className="dashboard-box" ref={node => (this.node = node)}>
+        <BackTop />
         {redirect ? <Redirect to={redirect} /> : null}
         <Layout className="dashboard-layout">
           <Sider

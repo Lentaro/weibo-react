@@ -45,6 +45,7 @@ export default class SendBlog extends PureComponent {
     this.props.update({ blogNum: this.props.blogNum + 1 });
   };
   render() {
+    // console.log(!!toString(this.state.mentionValue))
     return (
       <Card className="send-card" bodyStyle={{ padding: "12px 12px 8px 12px" }}>
         <Mention
@@ -56,7 +57,12 @@ export default class SendBlog extends PureComponent {
           value={this.state.mentionValue}
         />
         <div className="send-actions">
-          <Button type="primary" className="send-now" onClick={this.handleSend}>
+          <Button
+            type="primary"
+            className="send-now"
+            onClick={this.handleSend}
+            disabled={!toString(this.state.mentionValue)}
+          >
             发送
           </Button>
         </div>

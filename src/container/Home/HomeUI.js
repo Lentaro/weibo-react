@@ -5,7 +5,6 @@ import { Col, Row } from "antd";
 import SendBlog from "component/SendBlog/SendBlog";
 import BlogList from "container/BlogList/BlogList";
 import "./HomeUI.less";
-import BackTop from "component/BackTop/BackTop";
 
 export default class HomeUI extends Component {
   static propTypes = {
@@ -37,8 +36,6 @@ export default class HomeUI extends Component {
             }}
           />
         </Col>
-
-        <BackTop />
       </Row>
     );
   }

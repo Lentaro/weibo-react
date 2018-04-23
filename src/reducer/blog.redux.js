@@ -1,4 +1,4 @@
-import { fromJS, Map } from "immutable";
+import { fromJS, Map, isImmutable } from "immutable";
 import axios from "axios";
 
 import { blogTimeLineSort } from "utils/utils";
@@ -48,14 +48,11 @@ export const blog = (state = fromJS(initialState), action) => {
     case UPDATE_BLOG_INFO:
       return state.update("blog", v =>
         state.get("blog").map(v => {
-          if (v) {
-            if (v.get("_id") === action.payload._id) {
-              return Map(action.payload);
-            } else {
-              return v;
-            }
+          if (v._id?v._id:v.get("_id") === action.payload._id) {
+            return Map(action.payload);
+          } else {
+            return v;
           }
-          return v;
         })
       );
     default:

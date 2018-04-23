@@ -79,7 +79,6 @@ export default class componentName extends PureComponent {
             <BlogList />
           </Col>
         </Row>
-        <BackTop />
       </Layout>
     );
   }

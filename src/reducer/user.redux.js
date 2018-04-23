@@ -27,7 +27,7 @@ const initialState = {
   msg: "",
   redirectTo: "",
   create_time: "",
-  id:""
+  id:""   
 };
 
 export const user = (state = fromJS(initialState), action) => {
@@ -118,7 +118,7 @@ export const register = ({ username, password, nickname }) => {
     if (res.status === 200 && res.data.code === 0) {
       dispatch(authSuccess(res.data.data));
     } else {
-      dispatch(errorMsg(res.data.msg));
+      dispatch(errorMsg(res.data.msg)); 
     }
   };
 };
@@ -132,3 +132,6 @@ export const cleanMsg = () => {
 export const addBLogNum = () => {
   return { type: ADD_BLOG_NUM };
 };
+
+
+// http://localhost:9093"
