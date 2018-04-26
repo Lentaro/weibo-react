@@ -9,7 +9,7 @@ import { errorMsg } from "./user.redux";
 // const ERROR_MSG = "ERROR_MSG";
 const PUSH_BLOG = "PUSH_BLOG";
 const ADD_NEW_BLOG = "ADD_NEW_BLOG";
-const UPDATE_BLOG_INFO = "CHANGE_BLOG_INFO";
+const UPDATE_BLOG_INFO = "UPDATE_BLOG_INFO";
 const COMMENT_NUM_ADD = "COMMENT_NUM_ADD";
 
 // reducer
@@ -48,7 +48,9 @@ export const blog = (state = fromJS(initialState), action) => {
     case UPDATE_BLOG_INFO:
       return state.update("blog", v =>
         state.get("blog").map(v => {
-          if (v._id ? v._id : v.get("_id") === action.payload._id) {
+          const id = v._id ? v._id : v.get("_id");
+          // console.log(id);
+          if (id === action.payload._id) {
             return Map(action.payload);
           } else {
             return v;
@@ -81,15 +83,18 @@ export const sendBlog = params => {
   return async dispatch => {
     const res = await axios.post("/blog/sendblog", params);
     if (res.status === 200 && res.data.code === 0) {
-      console.log(res.data);
+      // console.log(res.data);
+      // console.log(!!res.data.type);
       // const data = blogTypeFilter([res.data.data]);
       // console.log(data)
       // if (data.length) {
       //   dispatch(addNewBlog(...data));
       // }
+      // console.log(res.data.source);
       if (res.data.type) {
         dispatch(updateBlogInfo(res.data.source));
       } else {
+        // console.log(1);
         dispatch(addNewBlog(res.data.data));
       }
     } else {

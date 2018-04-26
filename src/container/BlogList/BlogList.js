@@ -18,9 +18,7 @@ export default class BlogList extends Component {
   componentDidMount() {
     // console.log(this.props.userId);
     // console.log(1);
-    if (!!this.props.userId) {
-      this.props.getUserBlog(this.props.userId);
-    }
+    this.props.getUserBlog(this.props.userId);
   }
   shouldComponentUpdate(nextProps, nextState) {
     // console.log(this.props.userId);

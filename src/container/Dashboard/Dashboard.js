@@ -22,7 +22,7 @@ export default class Dashboard extends Component {
     this.props.history.push(url);
   };
   render() {
-    console.log(this.props);
+    // console.log(this.props);
     const { logout, handleCollapse } = this.props;
     const { redirectTo } = this.props.user.toJS();
     const { pathname } = this.props.location;
