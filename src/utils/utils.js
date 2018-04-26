@@ -34,7 +34,16 @@ export const blogTimeCount = params => {
   }
 };
 
+// 区分微博和评论，转发的过滤
+export const blogTypeFilter = blogList => {
+  return blogList.filter(v => {
+    return !(v.type === "comment");
+  });
+};
+
+export const commentTypeFilter = params => {};
+
 // 喜欢的不喜欢的微博进行过滤
 // export const ifLike = params => {
-  
+
 // }

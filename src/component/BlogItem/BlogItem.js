@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 
 import "./BlogItem.less";
 import { blogTimeCount } from "@/utils/utils";
+import Comment from "container/Comment/Comment";
 
 const { Meta } = Card;
 
@@ -16,8 +17,10 @@ export default class BlogItem extends PureComponent {
     comment_num: PropTypes.number,
     like: PropTypes.array,
     mentions: PropTypes.array,
-    create_time: PropTypes.number.isRequired
+    create_time: PropTypes.number.isRequired,
+    handleLike: PropTypes.func.isRequired
   };
+
   render() {
     // console.log(this.props);
     const {
@@ -34,38 +37,42 @@ export default class BlogItem extends PureComponent {
       handleComment,
       handleLike
     } = this.props;
+    // console.log(id);
     return (
-      <Card
-        className="blog-item"
-        bodyStyle={{ padding: "12px" }}
-        actions={[
-          <span onClick={handleCite}>
-            <Icon type="export" />
-            <span className="num">{cited_num ? cited_num : "转发"}</span>
-          </span>,
-          <span onClick={handleComment}>
-            <Icon type="message" />
-            <span className="num">{comment_num ? comment_num : "评论"}</span>
-          </span>,
-          <span
-            onClick={() => {
-              handleLike(id);
-            }}
-          >
-            <Icon type={like.length ? "like" : "like-o"} />
-            <span className="num">{like.length ? like.length : "赞"}</span>
-          </span>
-        ]}
-      >
-        <Meta
-          className="blog-title"
-          avatar={<Avatar icon={avatar} />}
-          title={nickname}
-          description={blogTimeCount(create_time)}
-        />
-        <p className="content">{value}</p>
-        {/* value={value} cited_num={cited_num} comment_num={comment_num} like={like} mentions={mentions} */}
-      </Card>
+      <div className="blog-item-box">
+        <Card
+          className="blog-item"
+          bodyStyle={{ padding: "12px" }}
+          actions={[
+            <span onClick={handleCite}>
+              <Icon type="export" />
+              <span className="num">{cited_num ? cited_num : "转发"}</span>
+            </span>,
+            <span onClick={handleComment}>
+              <Icon type="message" />
+              <span className="num">{comment_num ? comment_num : "评论"}</span>
+            </span>,
+            <span
+              onClick={() => {
+                handleLike(id);
+              }}
+            >
+              <Icon type={like.length ? "like" : "like-o"} />
+              <span className="num">{like.length ? like.length : "赞"}</span>
+            </span>
+          ]}
+        >
+          <Meta
+            className="blog-title"
+            avatar={<Avatar icon={avatar} />}
+            title={nickname}
+            description={blogTimeCount(create_time)}
+          />
+          <p className="content">{value}</p>
+          {/* value={value} cited_num={cited_num} comment_num={comment_num} like={like} mentions={mentions} */}
+        </Card>
+        <Comment source={id} />
+      </div>
     );
   }
 }

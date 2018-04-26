@@ -6,7 +6,6 @@ import PropTypes from "prop-types";
 
 import "./MeUI.less";
 import BlogList from "container/BlogList/BlogList";
-import BackTop from "component/BackTop/BackTop";
 
 const CardGrid = Card.Grid;
 
@@ -50,7 +49,7 @@ export default class componentName extends PureComponent {
         </Card>
         <Row gutter={16} style={{ marginTop: "24px" }}>
           <Col span={7} className="left-list">
-            <Card className="follow-plate">
+            <Card className="follow-plate" bodyStyle={{ padding: "0px" }}>
               <CardGrid>
                 <strong>{follow.length}</strong>
                 <span>关注</span>

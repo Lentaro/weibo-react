@@ -1,3 +1,10 @@
+// 此组件可在父级调用时传入
+// inputHeight（控制输入框高度 string）
+// placeholder（输入框提示 string）
+// buttonSize （发送按钮大小 string（small，large 或 null））
+// multiLines （多行模式 boolean）
+// type （发送的类型 string （blog,cite,comment） ）
+
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { Mention, Button, Card } from "antd";
@@ -9,9 +16,15 @@ const { toContentState, toString, getMentions } = Mention;
 export default class SendBlog extends PureComponent {
   static propTypes = {
     sendBlog: PropTypes.func.isRequired,
-    blogNum: PropTypes.number.isRequired,
-    update: PropTypes.func.isRequired,
-    avatar: PropTypes.string.isRequired
+    blogNum: PropTypes.number,
+    update: PropTypes.func,
+    avatar: PropTypes.string.isRequired,
+    inputHeight: PropTypes.number,
+    placeholder: PropTypes.string,
+    buttonSize: PropTypes.string,
+    multiLines: PropTypes.bool,
+    type: PropTypes.string.isRequired,
+    source: PropTypes.string
   };
   state = {
     mentionValue: toContentState(""),
@@ -19,7 +32,9 @@ export default class SendBlog extends PureComponent {
       value: "",
       mentions: "",
       avatar: "",
-      nickname: ""
+      nickname: "",
+      type: "",
+      source: ""
     }
   };
   handleChange = value => {
@@ -32,7 +47,9 @@ export default class SendBlog extends PureComponent {
         value: contentValue,
         mentions: mentions,
         avatar: this.props.avatar,
-        nickname: this.props.nickname
+        nickname: this.props.nickname,
+        type: this.props.type,
+        source: this.props.source
       }
     });
   };
@@ -42,19 +59,25 @@ export default class SendBlog extends PureComponent {
       mentionValue: toContentState("")
     });
     this.props.sendBlog(this.state.sendValue);
-    this.props.update({ blogNum: this.props.blogNum + 1 });
+    if (this.props.type === "blog" || this.props.type === "cite") {
+      this.props.update({ blogNum: this.props.blogNum + 1 });
+    }
+    if(this.props.source){
+      
+    }
   };
   render() {
     // console.log(!!toString(this.state.mentionValue))
+    const { inputHeight, placeholder, buttonSize, multiLines } = this.props;
     return (
       <Card className="send-card" bodyStyle={{ padding: "12px 12px 8px 12px" }}>
         <Mention
           className="send-input"
-          style={{ width: "100%", height: 100 }}
-          multiLines
-          placeholder="分享你的心情"
+          style={{ width: "100%", height: inputHeight }}
+          placeholder={placeholder}
           onChange={this.handleChange}
           value={this.state.mentionValue}
+          multiLines={multiLines}
         />
         <div className="send-actions">
           <Button
@@ -62,6 +85,7 @@ export default class SendBlog extends PureComponent {
             className="send-now"
             onClick={this.handleSend}
             disabled={!toString(this.state.mentionValue)}
+            size={buttonSize ? buttonSize : "default"}
           >
             发送
           </Button>

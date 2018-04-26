@@ -1,28 +1,33 @@
-.blog-item {
+.blog-item-box {
   margin-bottom: 8px;
-  .blog-title {
-    .ant-card-meta-detail {
-      display: flex;
-      flex-direction: row;
-      .ant-card-meta-title {
-        margin: 0;
-        font-size: 16px;
-        line-height: 21px;
+  .blog-item {
+    .blog-title {
+      .ant-card-meta-detail {
+        display: flex;
+        flex-direction: row;
+        .ant-card-meta-title {
+          margin: 0;
+          font-size: 16px;
+          line-height: 21px;
+        }
+        .ant-card-meta-description {
+          font-size: 14px;
+          line-height: 21px;
+          margin-left: 5px;
+        }
       }
-      .ant-card-meta-description {
-        font-size: 14px;
-        line-height: 21px;
+    }
+    .content {
+      margin: 0;
+      margin-left: 48px;
+    }
+    .ant-card-actions {
+      .num {
         margin-left: 5px;
       }
     }
   }
-  .content {
-    margin: 0;
-    margin-left: 48px;
-  }
-  .ant-card-actions {
-    .num {
-      margin-left: 5px;
-    }
+  .send-card {
+    margin-bottom: 8px;
   }
 }

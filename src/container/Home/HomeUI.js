@@ -24,6 +24,10 @@ export default class HomeUI extends Component {
             update={update}
             avatar={avatar}
             nickname={nickname}
+            inputHeight={100}
+            placeholder="分享你的心情"
+            multiLines={true}
+            type="blog"
           />
           <BlogList getFollowBlog={true} />
         </Col>

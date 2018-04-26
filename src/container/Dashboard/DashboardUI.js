@@ -8,7 +8,6 @@ import Message from "container/Message/Message";
 import Me from "container/Me/Me";
 import UserInfo from "container/UserInfo/UserInfo";
 import Logo from "component/Logo/Logo";
-import BackTop from "component/BackTop/BackTop";
 import "./DashboardUI.less";
 
 const { Sider } = Layout;
@@ -90,7 +89,6 @@ export default class DashboardUI extends PureComponent {
     const page = list.find(v => v.path === pathname);
     return page ? (
       <div className="dashboard-box" ref={node => (this.node = node)}>
-        <BackTop />
         {redirect ? <Redirect to={redirect} /> : null}
         <Layout className="dashboard-layout">
           <Sider
