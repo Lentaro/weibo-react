@@ -41,7 +41,11 @@ export const blogTypeFilter = blogList => {
   });
 };
 
-export const commentTypeFilter = params => {};
+export const commentTypeFilter = blogList => {
+  return blogList.filter(v => {
+    return v.type === "comment";
+  });
+};
 
 // 喜欢的不喜欢的微博进行过滤
 // export const ifLike = params => {

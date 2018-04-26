@@ -63,14 +63,15 @@ export default class SendBlog extends PureComponent {
       this.props.update({ blogNum: this.props.blogNum + 1 });
     }
     if(this.props.source){
-      
+
     }
   };
   render() {
     // console.log(!!toString(this.state.mentionValue))
-    const { inputHeight, placeholder, buttonSize, multiLines } = this.props;
+    const { inputHeight, placeholder, buttonSize, multiLines,type } = this.props;
     return (
-      <Card className="send-card" bodyStyle={{ padding: "12px 12px 8px 12px" }}>
+      <Card className="send-card" bodyStyle={{ padding: "12px 12px 8px 12px" }} 
+      bordered={type==="blog"?true:false} >
         <Mention
           className="send-input"
           style={{ width: "100%", height: inputHeight }}

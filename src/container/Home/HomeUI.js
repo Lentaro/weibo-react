@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { Col, Row } from "antd";
 
@@ -6,15 +6,21 @@ import SendBlog from "component/SendBlog/SendBlog";
 import BlogList from "container/BlogList/BlogList";
 import "./HomeUI.less";
 
-export default class HomeUI extends Component {
+export default class HomeUI extends PureComponent {
   static propTypes = {
     sendBlog: PropTypes.func.isRequired,
     update: PropTypes.func.isRequired,
     blogNum: PropTypes.number.isRequired
   };
-
+  // componentDidMount() {
+  //   console.log(this.props.userId);
+  // }
+  // componentDidUpdate() {
+  //   console.log(this.props.userId);
+  // }
   render() {
-    const { avatar, sendBlog, blogNum, update, nickname } = this.props;
+    const { avatar, sendBlog, blogNum, update, nickname, userId } = this.props;
+    // console.log(userId)
     return (
       <Row gutter={12} className="home-box">
         <Col span={18} className="home-left">
@@ -29,7 +35,7 @@ export default class HomeUI extends Component {
             multiLines={true}
             type="blog"
           />
-          <BlogList getFollowBlog={true} />
+          <BlogList userId={userId} />
         </Col>
         <Col span={6} className="home-right">
           <div

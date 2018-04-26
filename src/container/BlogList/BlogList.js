@@ -1,26 +1,30 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { is } from "immutable";
+import PropTypes from "prop-types";
 
 import BlogItem from "component/BlogItem/BlogItem";
+import { blogTimeLineSort, blogTypeFilter } from "utils/utils";
 import { getUserBlog, addLike } from "reducer/blog.redux";
 
-@connect(
-  state => ({ userId: state.user.get("id"), blogList: state.blog.get("blog") }),
-  {
-    getUserBlog,
-    addLike
-  }
-)
+@connect(state => ({ blogList: state.blog.get("blog") }), {
+  getUserBlog,
+  addLike
+})
 export default class BlogList extends Component {
+  static propTypes = {
+    type: PropTypes.string
+  };
   componentDidMount() {
     // console.log(this.props.userId);
-    // console.log(1)
+    // console.log(1);
     if (!!this.props.userId) {
       this.props.getUserBlog(this.props.userId);
     }
   }
   shouldComponentUpdate(nextProps, nextState) {
+    // console.log(this.props.userId);
+    // console.log(nextProps.userId);
     // console.log(nextProps.userId, this.props.userId)
     // console.log(is(nextProps.userId,this.props.userId))
     return !(
@@ -32,9 +36,9 @@ export default class BlogList extends Component {
     // console.log(2)
     // console.log(this.props.userId);
     // console.log(this.props.blogList.size===0);
-    if (this.props.blogList.size === 0) {
-      this.props.getUserBlog(this.props.userId);
-    }
+    // if (this.props.blogList.size === 0) {
+    //   this.props.getUserBlog(this.props.userId);
+    // }
   }
   handleCite = () => {};
   handleComment = () => {};
@@ -45,7 +49,8 @@ export default class BlogList extends Component {
   };
   render() {
     // console.log(this.props.blogList.toJS());
-    const blog = this.props.blogList.toJS();
+    // console.log(this.props.userId);
+    const blog = blogTimeLineSort(blogTypeFilter(this.props.blogList.toJS()));
     return blog.map(v => (
       <BlogItem
         nickname={v.nickname}

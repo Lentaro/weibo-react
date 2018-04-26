@@ -1,7 +1,6 @@
 import { fromJS, Map } from "immutable";
 import axios from "axios";
 
-import { blogTimeLineSort, blogTypeFilter } from "utils/utils";
 import { errorMsg } from "./user.redux";
 
 // actions
@@ -136,9 +135,9 @@ export const getUserBlog = params => {
   return async dispatch => {
     const res = await axios.get(`/blog/getuserblog?id=${params}`);
     if (res.status === 200 && res.data.code === 0) {
-      let data = res.data.doc;
+      const data = res.data.doc;
       // console.log(data);
-      data = blogTimeLineSort(blogTypeFilter(data));
+      // data = blogTimeLineSort(blogTypeFilter(data));
       // console.log(...data);
       dispatch(pushBlog(data));
     } else {
