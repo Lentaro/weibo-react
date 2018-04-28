@@ -5,7 +5,7 @@ import { Card } from "antd";
 import SendBlog from "component/SendBlog/SendBlog";
 import { sendBlog } from "reducer/blog.redux";
 import { connect } from "react-redux";
-import BlogList from "container/BlogList/BlogList";
+import CommentList from "container/CommentList/CommentList";
 
 @connect(state => ({ user: state.user }), { sendBlog })
 export default class Comment extends Component {
@@ -16,7 +16,7 @@ export default class Comment extends Component {
     const { avatar, nickname } = this.props.user.toJS();
     const { sendBlog, source } = this.props;
     return (
-      <Card bodyStyle={{ padding: "8px" }}>
+      <Card bodyStyle={{ padding: " 0 12px" }}>
         <SendBlog
           source={source}
           sendBlog={sendBlog}
@@ -25,7 +25,7 @@ export default class Comment extends Component {
           nickname={nickname}
           type="comment"
         />
-        {/* <BlogList type="comment" /> */}
+        <CommentList type="comment" id={source} />
       </Card>
     );
   }

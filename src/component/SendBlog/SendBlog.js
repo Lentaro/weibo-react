@@ -31,8 +31,6 @@ export default class SendBlog extends PureComponent {
     sendValue: {
       value: "",
       mentions: "",
-      avatar: "",
-      nickname: "",
       type: "",
       source: ""
     }
@@ -46,8 +44,6 @@ export default class SendBlog extends PureComponent {
       sendValue: {
         value: contentValue,
         mentions: mentions,
-        avatar: this.props.avatar,
-        nickname: this.props.nickname,
         type: this.props.type,
         source: this.props.source
       }
@@ -62,16 +58,28 @@ export default class SendBlog extends PureComponent {
     if (this.props.type === "blog" || this.props.type === "cite") {
       this.props.update({ blogNum: this.props.blogNum + 1 });
     }
-    if(this.props.source){
-
+    if (this.props.source) {
     }
   };
   render() {
     // console.log(!!toString(this.state.mentionValue))
-    const { inputHeight, placeholder, buttonSize, multiLines,type } = this.props;
+    const {
+      inputHeight,
+      placeholder,
+      buttonSize,
+      multiLines,
+      type
+    } = this.props;
     return (
-      <Card className="send-card" bodyStyle={{ padding: "12px 12px 8px 12px" }} 
-      bordered={type==="blog"?true:false} >
+      <Card
+        className="send-card"
+        bodyStyle={
+          type === "comment"
+            ? { padding: "12px 0 0 0" }
+            : { padding: "12px 12px 8px 12px" }
+        }
+        bordered={type === "blog" ? true : false}
+      >
         <Mention
           className="send-input"
           style={{ width: "100%", height: inputHeight }}

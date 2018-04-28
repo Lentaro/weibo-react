@@ -3,56 +3,47 @@ import { connect } from "react-redux";
 import { is } from "immutable";
 import PropTypes from "prop-types";
 
-import BlogItem from "component/BlogItem/BlogItem";
-import {
-  blogTimeLineSort,
-  blogTypeFilter,
-  commentTypeFilter
-} from "utils/utils";
-import { getUserBlog, addLike } from "reducer/blog.redux";
+import { blogTimeLineSort } from "utils/utils";
+import { addLike, getBlogComment } from "reducer/blog.redux";
+import CommentItem from "component/CommentItem/CommentItem";
 @connect(
   state => ({
-    blogList: state.blog.get("blog"),
     commentList: state.blog.get("comment")
   }),
   {
-    getUserBlog,
-    addLike
+    addLike,
+    getBlogComment
   }
 )
-export default class BlogList extends Component {
+export default class CommentList extends Component {
   static propTypes = {
     id: PropTypes.string
   };
   componentDidMount() {
-    console.log(this.props.id);
+    // console.log(this.props.id);
     // console.log(1);
-    this.props.getUserBlog(this.props.id);
+    this.props.getBlogComment(this.props.id);
   }
   shouldComponentUpdate(nextProps, nextState) {
     // console.log(this.props.id);
     // console.log(nextProps.id);
     // console.log(is(nextProps.id, this.props.id) &&
-    // is(nextProps.blogList, this.props.blogList));
+    // is(nextProps.commentList, this.props.commentList));
     // console.log(nextProps.id, this.props.id)
     // console.log(is(nextProps.id,this.props.id))
-    return !// if(this.props.type==="comment"){
-    //   is(nextProps.id, this.props.id) &&
-    // is(nextProps.commentList, this.props.commentList)
-    // }
-    (
+    return !(
       is(nextProps.id, this.props.id) &&
-      is(nextProps.blogList, this.props.blogList)
+      is(nextProps.commentList, this.props.commentList)
     );
   }
   componentDidUpdate() {
-    console.log(this.props.id);
     // console.log(2)
     // console.log(this.props.id);
-    // console.log(this.props.blogList.size===0);
-    // if (this.props.blogList.size === 0) {
+    // console.log(this.props.commentList.size===0);
+    // if (this.props.commentList.size === 0) {
     //   this.props.getUserBlog(this.props.id);
     // }
+    // this.props.getBlogComment(this.props.id);
   }
   handleCite = () => {};
   handleComment = () => {};
@@ -62,30 +53,29 @@ export default class BlogList extends Component {
     this.props.addLike(id);
   };
   render() {
-    // console.log(this.props.blogList.toJS());
+    // console.log(this.props.commentList.toJS());
     // console.log(this.props.id);
     const { type, id } = this.props;
     // console.log(id);
     // console.log(type);
-    // console.log(this.props.blogList.toJS());
+    // console.log(this.props.commentList.toJS());
     let blog = [];
-    blog = blogTimeLineSort(blogTypeFilter(this.props.blogList.toJS()));
+    // console.log(this.props.commentList.toJS()[id]);
+    blog = blogTimeLineSort(this.props.commentList.toJS()[id]);
+    // console.log(blog);
+
     // console.log(blog);
     return blog.map(v => (
-      <BlogItem
-        nickname={v.nickname}
+      <CommentItem
+        key={v._id}
         id={v._id}
-        create_time={v.create_time}
         avatar={v.avatar}
         value={v.value}
-        cited_num={v.cited_num}
-        comment_num={v.comment_num}
         like={v.like}
         mentions={v.mentions}
-        key={v._id}
-        handleCite={this.handleCite}
-        handleComment={this.handleComment}
         handleLike={this.handleLike}
+        create_time={v.create_time}
+        nickname={v.nickname}
       />
     ));
   }

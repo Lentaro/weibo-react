@@ -35,7 +35,7 @@ export default class HomeUI extends PureComponent {
             multiLines={true}
             type="blog"
           />
-          <BlogList userId={userId} />
+          <BlogList id={userId} />
         </Col>
         <Col span={6} className="home-right">
           <div

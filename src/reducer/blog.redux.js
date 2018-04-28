@@ -11,6 +11,9 @@ const PUSH_BLOG = "PUSH_BLOG";
 const ADD_NEW_BLOG = "ADD_NEW_BLOG";
 const UPDATE_BLOG_INFO = "UPDATE_BLOG_INFO";
 const COMMENT_NUM_ADD = "COMMENT_NUM_ADD";
+const PUSH_COMMENT = "PUSH_COMMENT";
+const COMMENT_INFO_UPDATE = "COMMENT_INFO_UPDATE";
+const ADD_NEW_COMMENT = "ADD_NEW_COMMENT";
 
 // reducer
 const initialState = {
@@ -23,7 +26,7 @@ const initialState = {
   cited: [],
   // 评论
   comment_num: "",
-  comment: [],
+  comment: {},
   // 提及
   mentions: [],
   // 作者id
@@ -39,9 +42,18 @@ export const blog = (state = fromJS(initialState), action) => {
   switch (action.type) {
     case PUSH_BLOG:
       return state.mergeDeep({ blog: action.payload });
+    case PUSH_COMMENT:
+      return state.updateIn(["comment", action.payload.source], val => {
+        return action.payload.data;
+      });
     case ADD_NEW_BLOG:
       return state.mergeDeep({
-        blog: state.get("blog").unshift(action.payload)
+        blog: state.get("blog").concat(action.payload)
+      });
+    case ADD_NEW_COMMENT:
+      return state.updateIn(["comment", action.payload.source], val => {
+        console.log(val);
+        return [...val, action.payload.data];
       });
     // case AUTH_SUCCESS:
     //   return state.mergeDeep(action.payload);
@@ -57,12 +69,49 @@ export const blog = (state = fromJS(initialState), action) => {
           }
         })
       );
+    case COMMENT_INFO_UPDATE:
+      return state.updateIn(["comment", action.payload.source], val => {
+        // console.log(val);
+        // console.log(action.payload);
+        return val.map(v => {
+          const id = v._id ? v._id : v.get("_id");
+          // console.log(id);
+          if (id === action.payload._id) {
+            return action.payload;
+          } else {
+            return v;
+          }
+        });
+      });
     default:
       return state;
   }
 };
 
 // action creator
+
+const addNewComment = data => {
+  // console.log(data.source);
+  return { type: ADD_NEW_COMMENT, payload: data };
+};
+
+const pushComment = data => {
+  // console.log(data);
+  return { type: PUSH_COMMENT, payload: data };
+};
+
+export const getBlogComment = source => {
+  return async dispatch => {
+    const res = await axios.get(`/blog/getblogcomment?source=${source}`);
+    if (res.status === 200 && res.data.code === 0) {
+      const data = res.data.doc;
+      // console.log(data);
+      dispatch(pushComment({ source, data }));
+    } else {
+      dispatch(errorMsg(res.data.msg));
+    }
+  };
+};
 
 // 在列表中添加最新的博客
 const addNewBlog = blog => {
@@ -92,6 +141,9 @@ export const sendBlog = params => {
       // }
       // console.log(res.data.source);
       if (res.data.type) {
+        dispatch(
+          addNewComment({ data: res.data.data, source: res.data.source._id })
+        );
         dispatch(updateBlogInfo(res.data.source));
       } else {
         // console.log(1);
@@ -103,14 +155,26 @@ export const sendBlog = params => {
   };
 };
 
+const commentInfoUpdate = params => {
+  // console.log(params);
+  return { type: COMMENT_INFO_UPDATE, payload: params };
+};
+
 export const addLike = blogId => {
   return async dispatch => {
-    // console.log(blogId)
+    const type = blogId["type"];
+    if (blogId["type"] === "comment") {
+      blogId = blogId["id"];
+    }
     const res = await axios.post("/blog/like", { blogId });
     if (res.status === 200 && res.data.code === 0) {
       const { doc } = res.data;
       // console.log(doc.like);
-      dispatch(updateBlogInfo(doc));
+      if (type === "comment") {
+        dispatch(commentInfoUpdate(doc));
+      } else {
+        dispatch(updateBlogInfo(doc));
+      }
     } else {
       dispatch(errorMsg(res.data.msg));
     }

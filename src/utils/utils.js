@@ -12,7 +12,10 @@ export const blogTimeLineSort = blogList => {
   const timeLine = (a, b) => {
     return b.create_time - a.create_time;
   };
-  return blogList.sort(timeLine);
+  if (blogList) {
+    return blogList.sort(timeLine);
+  }
+  return [];
 };
 
 // 微博发送时间判断
@@ -37,6 +40,8 @@ export const blogTimeCount = params => {
 // 区分微博和评论，转发的过滤
 export const blogTypeFilter = blogList => {
   return blogList.filter(v => {
+    // console.log(v)
+    // console.log(!(v.type === "comment"))
     return !(v.type === "comment");
   });
 };
