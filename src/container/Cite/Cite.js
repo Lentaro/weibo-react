@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Card, Mention } from "antd";
 
 import SendBLog from "component/SendBlog/SendBlog";
+import CiteList from "container/CiteList/CiteList";
 import { connect } from "react-redux";
 import { sendBlog } from "reducer/blog.redux";
 import { update } from "reducer/user.redux";
@@ -44,6 +45,7 @@ export default class Cite extends Component {
       newSourceList = Array.from(sourceList);
     }
     newSourceList.push(source);
+    // console.log(source);
     // console.log(newSourceList)
     return (
       <Card className="cite" bodyStyle={{ padding: " 0 12px" }}>
@@ -57,10 +59,11 @@ export default class Cite extends Component {
           update={update}
           sendBlog={sendBlog}
           blogNum={blogNum}
-          defaultValue={sourceValue ? " @" + nickname + " :" + citeValue : ""}
+          defaultValue={sourceValue ? "// @" + nickname + " :" + citeValue : ""}
           type="cite"
           buttonSize="small"
         />
+        <CiteList type="cite" id={source} />
       </Card>
     );
   }

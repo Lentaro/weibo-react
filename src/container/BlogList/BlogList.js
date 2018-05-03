@@ -5,16 +5,18 @@ import PropTypes from "prop-types";
 
 import BlogItem from "component/BlogItem/BlogItem";
 import { blogTimeLineSort, blogTypeFilter } from "utils/utils";
-import { getUserBlog, addLike } from "reducer/blog.redux";
+import { getUserBlog, addLike, blogUserCache } from "reducer/blog.redux";
 @connect(
   state => ({
     userId: state.user.get("id"),
     blogList: state.blog.get("blog"),
-    commentList: state.blog.get("comment")
+    commentList: state.blog.get("comment"),
+    cacheId: state.blog.get("blogUserCache")
   }),
   {
     getUserBlog,
-    addLike
+    addLike,
+    blogUserCache
   }
 )
 export default class BlogList extends Component {
@@ -24,10 +26,15 @@ export default class BlogList extends Component {
   componentDidMount() {
     // console.log(this.props.id);
     // console.log(1);
+    // console.log(this.props.cacheId);
     if (this.props.id) {
       this.props.getUserBlog(this.props.id);
+      this.props.blogUserCache(this.props.id);
+    } else {
+      this.props.getUserBlog(this.props.cacheId);
     }
   }
+  // componentWillUnmount = () => {};
   shouldComponentUpdate(nextProps, nextState) {
     // console.log(3);
     // console.log(this.props.id);
@@ -56,9 +63,11 @@ export default class BlogList extends Component {
     // console.log(2)
     // console.log(this.props.id);
     // console.log(this.props.blogList.size===0);
-    if (this.props.id) {
-      this.props.getUserBlog(this.props.id);
-    }
+    // console.log(this.props.cacheId);
+    // this.props.blogUserCache(this.props.id);
+    // if (this.props.cacheId) {
+    //   this.props.getUserBlog(this.props.cacheId);
+    // }
   }
   handleLike = id => {
     // console.log(id);

@@ -14,9 +14,15 @@ const COMMENT_NUM_ADD = "COMMENT_NUM_ADD";
 const PUSH_COMMENT = "PUSH_COMMENT";
 const COMMENT_INFO_UPDATE = "COMMENT_INFO_UPDATE";
 const ADD_NEW_COMMENT = "ADD_NEW_COMMENT";
+const BLOG_USER_CACHE = "BLOG_USER_CACHE";
+const PUSH_CITE = "PUSH_CITE";
+const ADD_NEW_CITE = "ADD_NEW_CITE";
+const CITE_INFO_UPDATE = "CITE_INFO_UPDATE";
 
 // reducer
 const initialState = {
+  //获取blog的id
+  blogUserCache: "",
   // 内容
   value: "",
   // 转发的来源
@@ -36,11 +42,14 @@ const initialState = {
   id: "",
   like: [],
   nickname: "",
-  blog: []
+  blog: [],
+  cite: {}
 };
 
 export const blog = (state = fromJS(initialState), action) => {
   switch (action.type) {
+    case BLOG_USER_CACHE:
+      return state.update("blogUserCache", value => action.payload);
     case PUSH_BLOG:
       // return state.mergeDeep({ blog: action.payload });
       return state.updateIn(["blog"], val => {
@@ -50,10 +59,22 @@ export const blog = (state = fromJS(initialState), action) => {
       return state.updateIn(["comment", action.payload.source], val => {
         return action.payload.data;
       });
+    case PUSH_CITE:
+      return state.updateIn(["cite", action.payload.cite], val => {
+        return action.payload.data;
+      });
     case ADD_NEW_BLOG:
       // console.log(action.payload)
       return state.mergeDeep({
         blog: state.get("blog").concat(action.payload)
+      });
+    case ADD_NEW_CITE:
+      // console.log(action.payload);
+      return state.updateIn(["cite", action.payload.cite], val => {
+        if (!val) {
+          val = [];
+        }
+        return [...val, action.payload.data];
       });
     case ADD_NEW_COMMENT:
       return state.updateIn(["comment", action.payload.source], val => {
@@ -93,12 +114,39 @@ export const blog = (state = fromJS(initialState), action) => {
           }
         });
       });
+    case CITE_INFO_UPDATE:
+      return state.updateIn(
+        ["cite", action.payload.source[action.payload.source.length - 1]],
+        val => {
+          console.log(val);
+          console.log(action.payload);
+          return val.map(v => {
+            const id = v._id ? v._id : v.get("_id");
+            // console.log(id);
+            if (id === action.payload._id) {
+              return action.payload;
+            } else {
+              return v;
+            }
+          });
+        }
+      );
     default:
       return state;
   }
 };
 
 // action creator
+
+// 页面刷新时保存需要获取博客的用户
+
+const citeInfoUpdate = cite => {
+  return { type: CITE_INFO_UPDATE, payload: cite };
+};
+
+export const blogUserCache = params => {
+  return { type: BLOG_USER_CACHE, payload: params };
+};
 
 const addNewComment = data => {
   // console.log(data.source);
@@ -117,6 +165,23 @@ export const getBlogComment = source => {
       const data = res.data.doc;
       // console.log(data);
       dispatch(pushComment({ source, data }));
+    } else {
+      dispatch(errorMsg(res.data.msg));
+    }
+  };
+};
+
+const pushCite = data => {
+  return { type: PUSH_CITE, payload: data };
+};
+
+export const getBlogCite = cite => {
+  // console.log(cite);
+  return async dispatch => {
+    const res = await axios.get(`/blog/getblogcite?cite=${cite}`);
+    if (res.status === 200 && res.data.code === 0) {
+      const data = res.data.doc;
+      dispatch(pushCite({ cite, data }));
     } else {
       dispatch(errorMsg(res.data.msg));
     }
@@ -157,6 +222,17 @@ export const sendBlog = params => {
           addNewComment({ data: res.data.data, source: res.data.source._id })
         );
         dispatch(updateBlogInfo(res.data.source));
+      } else if (res.data.type === "cite") {
+        // console.log(res.data);
+        // console.log(res.data.data.source_info._id);
+        dispatch(addNewBlog(res.data.data));
+        dispatch(
+          addNewCite({
+            data: res.data.data,
+            cite: res.data.source._id
+          })
+        );
+        dispatch(updateBlogInfo(res.data.source));
       } else {
         // console.log(1);
         // console.log(res.data.data);
@@ -168,15 +244,23 @@ export const sendBlog = params => {
   };
 };
 
+const addNewCite = params => {
+  return { type: ADD_NEW_CITE, payload: params };
+};
+
 const commentInfoUpdate = params => {
   // console.log(params);
   return { type: COMMENT_INFO_UPDATE, payload: params };
 };
 
 export const addLike = blogId => {
+  // console.log(blogId);
   return async dispatch => {
     const type = blogId["type"];
-    if (blogId["type"] === "comment") {
+    if (blogId["type"] === "comment" || blogId["type"] === "cite") {
+      blogId = blogId["id"];
+    }
+    if (blogId["type"] === "cite") {
       blogId = blogId["id"];
     }
     const res = await axios.post("/blog/like", { blogId });
@@ -186,6 +270,8 @@ export const addLike = blogId => {
       // console.log(doc);
       if (type === "comment") {
         dispatch(commentInfoUpdate(doc));
+      } else if (type === "cite") {
+        dispatch(citeInfoUpdate(doc));
       } else {
         dispatch(updateBlogInfo(doc));
       }

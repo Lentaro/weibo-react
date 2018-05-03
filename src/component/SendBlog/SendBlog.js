@@ -29,7 +29,7 @@ export default class SendBlog extends PureComponent {
   state = {
     mentionValue: toContentState(""),
     sendValue: {
-      value: this.props.defaultValue,
+      value: "",
       mentions: "",
       type: "",
       source: ""
@@ -61,8 +61,6 @@ export default class SendBlog extends PureComponent {
     if (this.props.type === "blog" || this.props.type === "cite") {
       this.props.update({ blogNum: this.props.blogNum + 1 });
     }
-    if (this.props.source) {
-    }
   };
   render() {
     // console.log(!!toString(this.state.mentionValue))
@@ -88,6 +86,11 @@ export default class SendBlog extends PureComponent {
           style={{ width: "100%", height: inputHeight }}
           placeholder={placeholder}
           onChange={this.handleChange}
+          defaultValue={
+            this.props.defaultValue
+              ? toContentState(this.props.defaultValue)
+              : null
+          }
           value={this.state.mentionValue}
           multiLines={multiLines}
         />

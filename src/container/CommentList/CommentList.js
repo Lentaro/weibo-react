@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { is, fromJS } from "immutable";
+import { is } from "immutable";
 import PropTypes from "prop-types";
 
 import { blogTimeLineSort } from "utils/utils";

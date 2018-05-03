@@ -24,7 +24,7 @@ const persistConfig = {
   // 保存方式，默认为localStorage for web and AsyncStorage for react-native
   storage,
   // 白名单，要保存的key
-  whitelist: ["blog"]
+  whitelist: ["blog", "blogUserCache"]
 };
 // 按照设置的config白名单等对reducer进行管理
 const persistedReducer = persistReducer(persistConfig, reducers);
