@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
-import { Card, Avatar, Icon } from "antd";
+import { Avatar, Icon } from "antd";
 
 import { blogTimeCount } from "@/utils/utils";
 import "./CommentItem.less";

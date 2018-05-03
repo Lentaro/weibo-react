@@ -18,18 +18,18 @@ export default class SendBlog extends PureComponent {
     sendBlog: PropTypes.func.isRequired,
     blogNum: PropTypes.number,
     update: PropTypes.func,
-    avatar: PropTypes.string.isRequired,
     inputHeight: PropTypes.number,
     placeholder: PropTypes.string,
     buttonSize: PropTypes.string,
     multiLines: PropTypes.bool,
     type: PropTypes.string.isRequired,
-    source: PropTypes.string
+    source: PropTypes.string,
+    sourceList: PropTypes.array
   };
   state = {
     mentionValue: toContentState(""),
     sendValue: {
-      value: "",
+      value: this.props.defaultValue,
       mentions: "",
       type: "",
       source: ""
@@ -45,7 +45,10 @@ export default class SendBlog extends PureComponent {
         value: contentValue,
         mentions: mentions,
         type: this.props.type,
-        source: this.props.source
+        source:
+          this.props.type === "comment"
+            ? this.props.source
+            : this.props.sourceList
       }
     });
   };
@@ -74,7 +77,7 @@ export default class SendBlog extends PureComponent {
       <Card
         className="send-card"
         bodyStyle={
-          type === "comment"
+          type === "comment" || type === "cite"
             ? { padding: "12px 0 0 0" }
             : { padding: "12px 12px 8px 12px" }
         }
@@ -96,7 +99,7 @@ export default class SendBlog extends PureComponent {
             disabled={!toString(this.state.mentionValue)}
             size={buttonSize ? buttonSize : "default"}
           >
-            发送
+            {type === "comment" ? "评论" : type === "cite" ? "转发" : "发送"}
           </Button>
         </div>
       </Card>

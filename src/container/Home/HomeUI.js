@@ -19,7 +19,7 @@ export default class HomeUI extends PureComponent {
   //   console.log(this.props.userId);
   // }
   render() {
-    const { avatar, sendBlog, blogNum, update, nickname, userId } = this.props;
+    const { sendBlog, blogNum, update, userId } = this.props;
     // console.log(userId)
     return (
       <Row gutter={12} className="home-box">
@@ -28,8 +28,6 @@ export default class HomeUI extends PureComponent {
             sendBlog={sendBlog}
             blogNum={blogNum}
             update={update}
-            avatar={avatar}
-            nickname={nickname}
             inputHeight={100}
             placeholder="分享你的心情"
             multiLines={true}

@@ -13,7 +13,6 @@ import Login from "container/Login/Login";
 import Register from "container/Register/Register";
 import AuthRoute from "container/AuthRoute/AuthRoute";
 import Dashboard from "container/Dashboard/Dashboard";
-import BackTop from "component/BackTop/BackTop";
 import "./App.less";
 
 // 使用redux-persist来自动化将redux保存到localStorage中
@@ -55,7 +54,6 @@ class App extends Component {
                 <Route path="/register" component={Register} />
                 <Route component={Dashboard} />
               </Switch>
-              <BackTop />
             </div>
           </BrowserRouter>
         </PersistGate>

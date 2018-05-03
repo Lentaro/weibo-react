@@ -41,6 +41,7 @@ export const user = (state = fromJS(initialState), action) => {
     case CLEAN_MSG:
       return state.mergeDeep(action.payload);
     case USER_INFO_UPDATE_SUCCESS:
+      // console.log(action.payload)
       return state.mergeDeep(action.payload);
     case LOGOUT:
       return state.mergeDeep(action.payload);
@@ -67,6 +68,7 @@ export const update = values => {
 
 // 用户信息更新成功
 const userInfoUpdateSuccess = data => {
+  // console.log(data);
   return { type: USER_INFO_UPDATE_SUCCESS, payload: data };
 };
 

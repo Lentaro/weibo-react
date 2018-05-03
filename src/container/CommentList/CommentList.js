@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { is } from "immutable";
+import { is, fromJS } from "immutable";
 import PropTypes from "prop-types";
 
 import { blogTimeLineSort } from "utils/utils";
@@ -22,7 +22,9 @@ export default class CommentList extends Component {
   componentDidMount() {
     // console.log(this.props.id);
     // console.log(1);
-    this.props.getBlogComment(this.props.id);
+    if (this.props.id) {
+      this.props.getBlogComment(this.props.id);
+    }
   }
   shouldComponentUpdate(nextProps, nextState) {
     // console.log(this.props.id);
@@ -37,6 +39,7 @@ export default class CommentList extends Component {
     );
   }
   componentDidUpdate() {
+    // console.log(1);
     // console.log(2)
     // console.log(this.props.id);
     // console.log(this.props.commentList.size===0);
@@ -55,10 +58,10 @@ export default class CommentList extends Component {
   render() {
     // console.log(this.props.commentList.toJS());
     // console.log(this.props.id);
-    const { type, id } = this.props;
+    const { id } = this.props;
     // console.log(id);
     // console.log(type);
-    // console.log(this.props.commentList.toJS());
+    // console.log(this.props.commentList);
     let blog = [];
     // console.log(this.props.commentList.toJS()[id]);
     blog = blogTimeLineSort(this.props.commentList.toJS()[id]);

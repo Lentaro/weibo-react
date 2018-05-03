@@ -20,7 +20,8 @@ const initialState = {
   // 内容
   value: "",
   // 转发的来源
-  source: "",
+  source: [],
+  source_value: {},
   // 被转发
   cited_num: "",
   cited: [],
@@ -41,18 +42,26 @@ const initialState = {
 export const blog = (state = fromJS(initialState), action) => {
   switch (action.type) {
     case PUSH_BLOG:
-      return state.mergeDeep({ blog: action.payload });
+      // return state.mergeDeep({ blog: action.payload });
+      return state.updateIn(["blog"], val => {
+        return fromJS(action.payload);
+      });
     case PUSH_COMMENT:
       return state.updateIn(["comment", action.payload.source], val => {
         return action.payload.data;
       });
     case ADD_NEW_BLOG:
+      // console.log(action.payload)
       return state.mergeDeep({
         blog: state.get("blog").concat(action.payload)
       });
     case ADD_NEW_COMMENT:
       return state.updateIn(["comment", action.payload.source], val => {
-        console.log(val);
+        // console.log(val);
+        // console.log(action.payload.data);
+        if (!val) {
+          val = [];
+        }
         return [...val, action.payload.data];
       });
     // case AUTH_SUCCESS:
@@ -63,6 +72,7 @@ export const blog = (state = fromJS(initialState), action) => {
           const id = v._id ? v._id : v.get("_id");
           // console.log(id);
           if (id === action.payload._id) {
+            // console.log(action.payload._id);
             return Map(action.payload);
           } else {
             return v;
@@ -70,7 +80,7 @@ export const blog = (state = fromJS(initialState), action) => {
         })
       );
     case COMMENT_INFO_UPDATE:
-      return state.updateIn(["comment", action.payload.source], val => {
+      return state.updateIn(["comment", action.payload.source[0]], val => {
         // console.log(val);
         // console.log(action.payload);
         return val.map(v => {
@@ -128,7 +138,7 @@ export const commentNumAdd = source => {
 };
 
 export const sendBlog = params => {
-  // console.log(params)
+  // console.log(params);
   return async dispatch => {
     const res = await axios.post("/blog/sendblog", params);
     if (res.status === 200 && res.data.code === 0) {
@@ -140,13 +150,16 @@ export const sendBlog = params => {
       //   dispatch(addNewBlog(...data));
       // }
       // console.log(res.data.source);
-      if (res.data.type) {
+      // console.log(res.data.type);
+      if (res.data.type === "comment") {
+        // console.log(2);
         dispatch(
           addNewComment({ data: res.data.data, source: res.data.source._id })
         );
         dispatch(updateBlogInfo(res.data.source));
       } else {
         // console.log(1);
+        // console.log(res.data.data);
         dispatch(addNewBlog(res.data.data));
       }
     } else {
@@ -170,6 +183,7 @@ export const addLike = blogId => {
     if (res.status === 200 && res.data.code === 0) {
       const { doc } = res.data;
       // console.log(doc.like);
+      // console.log(doc);
       if (type === "comment") {
         dispatch(commentInfoUpdate(doc));
       } else {

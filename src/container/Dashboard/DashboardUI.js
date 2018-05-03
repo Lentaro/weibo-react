@@ -9,6 +9,7 @@ import Me from "container/Me/Me";
 import UserInfo from "container/UserInfo/UserInfo";
 import Logo from "component/Logo/Logo";
 import "./DashboardUI.less";
+import BackTop from "component/BackTop/BackTop";
 
 const { Sider } = Layout;
 const MenuItem = Menu.Item;
@@ -143,6 +144,7 @@ export default class DashboardUI extends PureComponent {
             </Switch>
           </Layout>
         </Layout>
+        <BackTop />
       </div>
     ) : null;
   }
