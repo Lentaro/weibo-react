@@ -7,6 +7,7 @@ import { persistStore, persistReducer } from "redux-persist";
 import immutableTransform from "redux-persist-transform-immutable";
 import storage from "redux-persist/lib/storage";
 import { PersistGate } from "redux-persist/integration/react";
+import QueueAnim from "rc-queue-anim";
 // 引入reducer
 import reducers from "reducer/reducer";
 import Login from "container/Login/Login";

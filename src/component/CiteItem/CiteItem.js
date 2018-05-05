@@ -13,7 +13,6 @@ export default class CiteItem extends PureComponent {
     create_time: PropTypes.number.isRequired,
     handleLike: PropTypes.func.isRequired
   };
-
   render() {
     // console.log(this.props.id);
     const {
@@ -31,7 +30,7 @@ export default class CiteItem extends PureComponent {
       likeNum = like.length;
     }
     return (
-      <div className="comment-item">  
+      <div className="comment-item">
         <Avatar className="avatar" icon={avatar} />
         <div className="comment-content">
           <div className="comment-text">

@@ -21,7 +21,19 @@ export default class BackTop extends PureComponent {
 
   // 返回顶部
   scrollToTop = () => {
-    window.scrollTo(0, 0);
+    let scrollTime = setInterval(() => {
+      let top = document.body.scrollTop || document.documentElement.scrollTop;
+      let speed = top / 4;
+      if (document.body.scrollTop !== 0) {
+        document.body.scrollTop -= speed;
+      } else {
+        document.documentElement.scrollTop -= speed;
+      }
+      if (top === 0) {
+        clearInterval(scrollTime);
+      }
+    }, 15);
+    // window.scrollTo(0, 0);
   };
 
   render() {

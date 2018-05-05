@@ -15,7 +15,6 @@ export default class CommentItem extends PureComponent {
     create_time: PropTypes.number.isRequired,
     handleLike: PropTypes.func.isRequired
   };
-
   render() {
     // console.log(this.props.id);
     const {

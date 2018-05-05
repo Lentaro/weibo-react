@@ -1,7 +1,8 @@
 import React, { PureComponent } from "react";
 import { Modal, Layout, Menu, Icon } from "antd";
 import PropTypes from "prop-types";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
+import QueueAnim from "rc-queue-anim";
 
 import Home from "container/Home/Home";
 import Message from "container/Message/Message";
@@ -9,7 +10,6 @@ import Me from "container/Me/Me";
 import UserInfo from "container/UserInfo/UserInfo";
 import Logo from "component/Logo/Logo";
 import "./DashboardUI.less";
-import BackTop from "component/BackTop/BackTop";
 
 const { Sider } = Layout;
 const MenuItem = Menu.Item;
@@ -20,10 +20,25 @@ export default class DashboardUI extends PureComponent {
   };
   state = {
     logoutModal: false,
-    collapse: false
+    collapse: false,
+    backTop: false
   };
-  componentDidUpdate() {
-    this.node.scrollIntoView();
+  componentWillReceiveProps(nextProps) {
+    //当路由切换时
+    if (this.props.location !== nextProps.location) {
+      window.scrollTo(0, 0);
+    }
+  }
+  componentDidMount() {
+    window.onscroll = () => {
+      // 变量t就是滚动条滚动时，到顶部的距离
+      const t = document.documentElement.scrollTop || document.body.scrollTop;
+      if (t >= 100) {
+        this.setState({ backTop: true });
+      } else {
+        this.setState({ backTop: false });
+      }
+    };
   }
   handleJump = e => {
     const { key } = e;
@@ -31,11 +46,26 @@ export default class DashboardUI extends PureComponent {
     // console.log(this.props.history)
     if (key === "logout") {
       return this.handleLogout();
-    }
-    if (this.props.pathname !== key) {
+    } else if (key === "backTop") {
+      return this.handleBackTop();
+    } else if (this.props.pathname !== key) {
       // console.log(1)
       this.props.push(key);
     }
+  };
+  handleBackTop = () => {
+    let scrollTime = setInterval(() => {
+      let top = document.body.scrollTop || document.documentElement.scrollTop;
+      let speed = top / 4;
+      if (document.body.scrollTop !== 0) {
+        document.body.scrollTop -= speed;
+      } else {
+        document.documentElement.scrollTop -= speed;
+      }
+      if (top === 0) {
+        clearInterval(scrollTime);
+      }
+    }, 15);
   };
   handleLogout = () => {
     this.setState({
@@ -89,7 +119,7 @@ export default class DashboardUI extends PureComponent {
     const { pathname, redirect } = this.props;
     const page = list.find(v => v.path === pathname);
     return page ? (
-      <div className="dashboard-box" ref={node => (this.node = node)}>
+      <div className="dashboard-box">
         {redirect ? <Redirect to={redirect} /> : null}
         <Layout className="dashboard-layout">
           <Sider
@@ -101,7 +131,7 @@ export default class DashboardUI extends PureComponent {
             {/*defaultSelectedKeys的值预计为数组*/}
             <Menu
               theme="dark"
-              defaultSelectedKeys={[pathname]}
+              selectedKeys={[pathname]}
               mode="inline"
               onClick={this.handleJump}
               className="sider-menu"
@@ -117,6 +147,12 @@ export default class DashboardUI extends PureComponent {
                   </MenuItem>
                 );
               })}
+              {this.state.backTop ? (
+                <MenuItem key="backTop" className="backTop">
+                  <Icon type="to-top" />
+                  <span>回到顶部</span>
+                </MenuItem>
+              ) : null}
               <MenuItem key="logout" className="logout">
                 <Icon type="logout" />
                 <span>退出登录</span>
@@ -137,14 +173,15 @@ export default class DashboardUI extends PureComponent {
             className="app-route"
             style={{ marginLeft: this.state.collapse ? "80px" : "200px" }}
           >
-            <Switch>
-              {list.map(v => (
-                <Route key={v.path} path={v.path} component={v.component} />
-              ))}
-            </Switch>
+            <QueueAnim type={["right", "left"]}>
+              <Route
+                key={page.path}
+                path={page.path}
+                component={page.component}
+              />
+            </QueueAnim>
           </Layout>
         </Layout>
-        <BackTop />
       </div>
     ) : null;
   }

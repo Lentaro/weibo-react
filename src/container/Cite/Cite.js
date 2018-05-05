@@ -53,8 +53,10 @@ export default class Cite extends Component {
           className="sourceValue"
           value={toContentState(this.state.sourceValue)}
           readOnly
+          key={"sourceValue"}
         />
         <SendBLog
+          key={"SendBLog"}
           sourceList={newSourceList}
           update={update}
           sendBlog={sendBlog}
@@ -63,7 +65,7 @@ export default class Cite extends Component {
           type="cite"
           buttonSize="small"
         />
-        <CiteList type="cite" id={source} />
+        <CiteList key={"cite"} type="cite" id={source} />
       </Card>
     );
   }

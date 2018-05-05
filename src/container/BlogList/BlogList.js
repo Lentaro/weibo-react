@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { is } from "immutable";
 import PropTypes from "prop-types";
+import QueueAnim from "rc-queue-anim";
 
 import BlogItem from "component/BlogItem/BlogItem";
 import { blogTimeLineSort, blogTypeFilter } from "utils/utils";
@@ -85,26 +86,30 @@ export default class BlogList extends Component {
     let blog = [];
     blog = blogTimeLineSort(blogTypeFilter(this.props.blogList.toJS()));
     // console.log(blog);
-    return blog.map(v => (
-      <BlogItem
-        userId={userId}
-        nickname={v.nickname}
-        id={v._id}
-        create_time={v.create_time}
-        avatar={v.avatar}
-        value={v.value}
-        cited_num={v.cited_num}
-        comment_num={v.comment_num}
-        like={v.like}
-        mentions={v.mentions}
-        key={v._id}
-        type={v.type}
-        source={v.source}
-        source_info={v.source_info}
-        handleCite={this.handleCite}
-        handleComment={this.handleComment}
-        handleLike={this.handleLike}
-      />
-    ));
+    return (
+      <QueueAnim duration={300} interval={100}>
+        {blog.map(v => (
+          <BlogItem
+            userId={userId}
+            nickname={v.nickname}
+            id={v._id}
+            create_time={v.create_time}
+            avatar={v.avatar}
+            value={v.value}
+            cited_num={v.cited_num}
+            comment_num={v.comment_num}
+            like={v.like}
+            mentions={v.mentions}
+            key={v._id}
+            type={v.type}
+            source={v.source}
+            source_info={v.source_info}
+            handleCite={this.handleCite}
+            handleComment={this.handleComment}
+            handleLike={this.handleLike}
+          />
+        ))}
+      </QueueAnim>
+    );
   }
 }

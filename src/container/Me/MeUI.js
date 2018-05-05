@@ -48,7 +48,11 @@ export default class componentName extends PureComponent {
           <p>{desc ? desc : "这个人很懒，没写简介"}</p>
         </Card>
         <Row gutter={16} style={{ marginTop: "24px" }}>
-          <Col span={7} className="left-list">
+          <Col
+            lg={{ span: 7, push: 17 }}
+            md={{ span: 24 }}
+            className="left-list"
+          >
             <Card className="follow-plate" bodyStyle={{ padding: "0px" }}>
               <CardGrid>
                 <strong>{follow.length}</strong>
@@ -74,7 +78,7 @@ export default class componentName extends PureComponent {
               <Link to="/userinfo">修改个人简介?</Link>
             </Card>
           </Col>
-          <Col span={17}>
+          <Col lg={{ span: 17, pull: 7 }} md={{ span: 24 }}>
             <BlogList />
           </Col>
         </Row>

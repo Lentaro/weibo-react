@@ -13,14 +13,23 @@ export default class Home extends Component {
   }
   render() {
     // console.log(this.props);
-    const { avatar, blogNum, nickname, id } = this.props.user.toJS();
+    const {
+      avatar,
+      blogNum,
+      nickname,
+      id,
+      fans,
+      follow
+    } = this.props.user.toJS();
     const { update, sendBlog } = this.props;
     // console.log(id);
     return (
       <HomeUI
         avatar={avatar}
-        sendBlog={sendBlog}
         blogNum={blogNum}
+        fans={fans}
+        sendBlog={sendBlog}
+        follow={follow}
         update={update}
         nickname={nickname}
         userId={id}
